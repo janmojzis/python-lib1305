@@ -11,6 +11,7 @@ def test_vector():
     poly1305.verify(a, m, k)
     assert (a == poly1305.auth(m, k))
 
+
 def test_vector1():
     '''
     This function primarily tests the internal freeze() function in lib1305.
@@ -24,8 +25,3 @@ def test_vector1():
     a = b'\x03' + 15 * b'\x00'
     poly1305.verify(a, m, k)
     assert (a == poly1305.auth(m, k))
-
-
-if __name__ == 'main':
-    test_vector()
-    test_vector1()
