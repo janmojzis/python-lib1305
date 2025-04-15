@@ -17,7 +17,7 @@ class poly1305:
         self._c_verify = getattr(_lib, 'lib1305_onetimeauth_poly1305_verify')
         self._c_verify.argtypes = [_ct.c_char_p,
                                    _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
-        self._c_auth.restype = None
+        self._c_verify.restype = _ct.c_int
 
     def auth(self, m, k):
         '''
