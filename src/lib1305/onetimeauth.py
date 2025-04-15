@@ -1,9 +1,17 @@
+'''
+Onetimeauth: secret-key single-message authentication module.
+'''
+
 from typing import Tuple as _Tuple
 import ctypes as _ct
 from ._lib import _lib, _check_input
 
 
-class poly1305:
+class Poly1305:
+    '''
+    Poly1305 one-time authenticator.
+    '''
+
     KEYBYTES = 32
     BYTES = 16
 
@@ -19,12 +27,16 @@ class poly1305:
                                    _ct.c_char_p, _ct.c_longlong, _ct.c_char_p]
         self._c_verify.restype = _ct.c_int
 
-    def auth(self, m, k):
+    def auth(self, m: bytes, k: bytes) -> bytes:
         '''
         Auth - generates an authenticator 'a' given a message 'm' and a secret key 'k'.
+
         Parameters:
             m (bytes): message
             k (bytes): secret key
+
+        Returns:
+            a (bytes): authenticator
         '''
         _check_input(m, -1, 'm')
         _check_input(k, self.KEYBYTES, 'k')
@@ -35,13 +47,20 @@ class poly1305:
         self._c_auth(a, m, mlen, k)
         return a.raw
 
-    def verify(self, a, m, k):
+    def verify(self, a: bytes, m: bytes, k: bytes) -> None:
         '''
         Verify - verifies an authenticator 'a' given a message 'm' and a secret key 'k'.
+
         Parameters:
             a (bytes): authenticator
             m (bytes): message
             k (bytes): secret key
+
+        Raises:
+            ValueError: an authenticator doesn't match
+
+        Returns:
+            None
         '''
         _check_input(a, self.BYTES, 'a')
         _check_input(m, -1, 'm')
@@ -51,7 +70,7 @@ class poly1305:
         k = _ct.create_string_buffer(k)
         a = _ct.create_string_buffer(a)
         if self._c_verify(a, m, mlen, k):
-            raise Exception('verify failed')
+            raise ValueError('verify failed')
 
 
-poly1305 = poly1305()
+poly1305 = Poly1305()

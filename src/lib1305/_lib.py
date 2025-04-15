@@ -1,3 +1,8 @@
+'''
+Import shared library.
+'''
+
+
 from ctypes import CDLL as _CDLL
 from ctypes.util import find_library as _find_library
 

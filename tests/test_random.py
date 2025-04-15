@@ -1,16 +1,22 @@
-from lib1305 import poly1305
-from secrets import randbelow
+'''
+random data test
+'''
+
+
 import os
+from secrets import randbelow
+from lib1305 import poly1305
 
 
-def test_random():
+def test_random() -> None:
     '''
+    random data test
     '''
 
     # generate a random 256-bit secret key
     k = os.urandom(32)
 
-    # generate a massage
+    # generate a random massage
     m = os.urandom(128 + randbelow(128))
 
     # compute an 128-bit authenticator
@@ -27,10 +33,10 @@ def test_random():
 
         try:
             poly1305.verify(a, m1, k)
-        except Exception as e:
+        except ValueError:
             pass
         else:
-            raise Exception('message forgery not detected !!!')
+            raise ValueError('message forgery not detected !!!')
 
     # replace byte in an authentificatior and check if verification fails
     for i in range(len(a)):
@@ -40,7 +46,7 @@ def test_random():
 
         try:
             poly1305.verify(a1, m, k)
-        except Exception as e:
+        except ValueError:
             pass
         else:
-            raise Exception('authenticator forgery not detected !!!')
+            raise ValueError('authenticator forgery not detected !!!')
