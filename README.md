@@ -1,4 +1,5 @@
-Python wrapper around implementation of the Poly1305 one-time authenticator.
+Python wrapper around [lib1305](https://lib1305.cr.yp.to) library,
+wrapper around the Poly1305 one-time authenticator.
 
 Import library:
 
